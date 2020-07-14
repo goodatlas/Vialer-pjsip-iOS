@@ -5,9 +5,9 @@ AVIALABLE_ARCHS=(
     "armv7"
     "armv7s"
     "arm64"
-    "i386"
-    "x86_64"
 )
+#    "i386"
+#    "x86_64"
 export BASE_DIR=`pwd -P`
 export MIN_IOS_VERSION="10.0"
 export IOS_SDK_VERSION="13.2"
@@ -18,11 +18,14 @@ export DOWNLOAD_PJSIP_SRC=true
 export CLEAN_PJSIP_SRC=true
 export SSL_SUPPORT=false
 export OPUS_SUPPORT=false
-export H264_SUPPORT=false
-export INDEPENDENT_WEBRTC=false
+#export H264_SUPPORT=false
+export H264_SUPPORT=true
+#export INDEPENDENT_WEBRTC=false
+export INDEPENDENT_WEBRTC=true
 export ENABLE_ZRTP=false
 export HAS_BITCODE=true
-export HAS_IPV6=false
+#export HAS_IPV6=false
+export HAS_IPV6=true
 export SHOW_HELP=false
 
 export PJSIP_VERSION="2.10"
@@ -197,7 +200,7 @@ function build_h264 () {
     cd $h264_target_path
 
     echo "Downloading h264-${h264_version}.tar.gz"
-	curl -LO $h264_url
+        curl -LO $h264_url
     echo "Using h264-${h264_version}.tar.gz"
 
     tar zxf "v${h264_version}.tar.gz" --strip 1
@@ -337,7 +340,7 @@ function build_opus () {
     cd $opus_src_dir
 
     echo "Downloading opus-${opus_version}.tar.gz"
-	curl -LO http://downloads.xiph.org/releases/opus/opus-${opus_version}.tar.gz
+        curl -LO http://downloads.xiph.org/releases/opus/opus-${opus_version}.tar.gz
     echo "Using opus-${opus_version}.tar.gz"
 
     tar zxf opus-${opus_version}.tar.gz
@@ -477,10 +480,12 @@ function config_site () {
         echo "#define PJMEDIA_VIDEO_DEV_HAS_OPENGL_ES 1" >> $PJSIP_CONFIG_SITE_H
         echo "#define PJMEDIA_VIDEO_DEV_HAS_IOS_OPENGL 1" >> $PJSIP_CONFIG_SITE_H
         echo "#include <OpenGLES/ES3/glext.h>" >> $PJSIP_CONFIG_SITE_H
+    else
+        echo "#define PJMEDIA_HAS_VIDEO 0" >> $PJSIP_CONFIG_SITE_H
     fi
 
     if [ $HAS_IPV6 = true ]; then
-        echo " #define PJ_HAS_IPV6 1" >> $PJSIP_CONFIG_SITE_H
+        echo "#define PJ_HAS_IPV6 1" >> $PJSIP_CONFIG_SITE_H
     fi
 
     while IFS=',' read -ra CONFIG_SITE_OPTION; do
@@ -490,6 +495,15 @@ function config_site () {
     done <<< $CONFIG_SITE_OPTIONS
 
     echo "#include <pj/config_site_sample.h>" >> $PJSIP_CONFIG_SITE_H
+
+    if [ $INDEPENDENT_WEBRTC = true ]; then
+        echo "#define PJMEDIA_HAS_WEBRTC_AEC 1" >> $PJSIP_CONFIG_SITE_H
+    fi
+
+    echo "#define PJMEDIA_HAS_SPEEX_AEC 1" >> $PJSIP_CONFIG_SITE_H
+    echo "#define PJMEDIA_SPEEX_AEC_USE_AGC 1" >> $PJSIP_CONFIG_SITE_H
+    echo "#define PJMEDIA_SPEEX_AEC_USE_DENOISE 1" >> $PJSIP_CONFIG_SITE_H
+
     echo "Done creating new config_site.h"
     echo "============================="
 }
@@ -619,7 +633,9 @@ function _collect () {
     done | tee "$BASE_DIR"/pjsip/logs/collect.log
 
     if [ $INDEPENDENT_WEBRTC = true ]; then
-        rm ./pjsip/temp/$1/libsrtp*.a
+        #if [ "$1" != "i386" ] || [ "$1" != "x86_64" ]; then
+            rm ./pjsip/temp/$1/libsrtp*.a
+        #fi
     fi
 }
 
