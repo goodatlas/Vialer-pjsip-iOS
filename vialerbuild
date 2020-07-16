@@ -505,6 +505,12 @@ function config_site () {
     echo "#define PJMEDIA_SPEEX_AEC_USE_AGC 1" >> $PJSIP_CONFIG_SITE_H
     echo "#define PJMEDIA_SPEEX_AEC_USE_DENOISE 1" >> $PJSIP_CONFIG_SITE_H
 
+    if [ $OPUS_SUPPORT = true ]; then
+      echo "#define PJMEDIA_HAS_OPUS_CODEC 1" >> $PJSIP_CONFIG_SITE_H
+      echo "#define PJMEDIA_CODEC_OPUS_DEFAULT_SAMPLE_RATE 8000" >> $PJSIP_CONFIG_SITE_H
+      echp "#define PJMEDIA_CODEC_OPUS_DEFAULT_CBR PJ_TRUE" >> $PJSIP_CONFIG_SITE_H
+    fi
+
     echo "Done creating new config_site.h"
     echo "============================="
 }
