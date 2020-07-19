@@ -507,8 +507,11 @@ function config_site () {
 
     if [ $OPUS_SUPPORT = true ]; then
       echo "#define PJMEDIA_HAS_OPUS_CODEC 1" >> $PJSIP_CONFIG_SITE_H
-      echo "#define PJMEDIA_CODEC_OPUS_DEFAULT_SAMPLE_RATE 8000" >> $PJSIP_CONFIG_SITE_H
-      echp "#define PJMEDIA_CODEC_OPUS_DEFAULT_CBR PJ_TRUE" >> $PJSIP_CONFIG_SITE_H
+      echo "#define PJMEDIA_CODEC_OPUS_DEFAULT_SAMPLE_RATE 16000" >> $PJSIP_CONFIG_SITE_H
+      echo "#define PTIME 40" >> $PJSIP_CONFIG_SITE_H
+      echo "#define PJMEDIA_CODEC_OPUS_DEFAULT_BIT_RATE 24000" >> $PJSIP_CONFIG_SITE_H
+      echo "#define PJMEDIA_CODEC_OPUS_DEFAULT_COMPLEXITY 1" >> $PJSIP_CONFIG_SITE_H
+      echo "#define PJMEDIA_CODEC_OPUS_DEFAULT_CBR PJ_TRUE" >> $PJSIP_CONFIG_SITE_H
     fi
 
     echo "Done creating new config_site.h"
@@ -599,6 +602,7 @@ function _build () {
     echo "Building for $arch"
 
     cp $PJSIP_CONFIG_SITE_H "$BASE_DIR/pjsip/src/pjlib/include/pj"
+    #cp "$BASE_DIR/opus.c" "$BASE_DIR/pjsip/src/pjmedia/src/pjmedia-codec/opus.c"
 
     ARCH="-arch $arch" $configure >> $arch_log 2>&1 || exit
 
