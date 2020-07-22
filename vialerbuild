@@ -476,11 +476,11 @@ function config_site () {
 
     if [ $H264_SUPPORT = true ]; then
         echo "#define PJMEDIA_HAS_VIDEO 1" >> $PJSIP_CONFIG_SITE_H
-        echo "#define PJMEDIA_HAS_OPENH264_CODEC 1" >> $PJSIP_CONFIG_SITE_H
-        echo "#define PJMEDIA_VIDEO_DEV_HAS_OPENGL 1" >> $PJSIP_CONFIG_SITE_H
-        echo "#define PJMEDIA_VIDEO_DEV_HAS_OPENGL_ES 1" >> $PJSIP_CONFIG_SITE_H
-        echo "#define PJMEDIA_VIDEO_DEV_HAS_IOS_OPENGL 1" >> $PJSIP_CONFIG_SITE_H
-        echo "#include <OpenGLES/ES3/glext.h>" >> $PJSIP_CONFIG_SITE_H
+        #echo "#define PJMEDIA_HAS_OPENH264_CODEC 1" >> $PJSIP_CONFIG_SITE_H
+        #echo "#define PJMEDIA_VIDEO_DEV_HAS_OPENGL 0" >> $PJSIP_CONFIG_SITE_H
+        #echo "#define PJMEDIA_VIDEO_DEV_HAS_OPENGL_ES 0" >> $PJSIP_CONFIG_SITE_H
+        #echo "#define PJMEDIA_VIDEO_DEV_HAS_IOS_OPENGL 0" >> $PJSIP_CONFIG_SITE_H
+        #echo "#include <OpenGLES/ES3/glext.h>" >> $PJSIP_CONFIG_SITE_H
     else
         echo "#define PJMEDIA_HAS_VIDEO 0" >> $PJSIP_CONFIG_SITE_H
     fi
@@ -505,13 +505,17 @@ function config_site () {
     echo "#define PJMEDIA_SPEEX_AEC_USE_AGC 1" >> $PJSIP_CONFIG_SITE_H
     echo "#define PJMEDIA_SPEEX_AEC_USE_DENOISE 1" >> $PJSIP_CONFIG_SITE_H
 
+    echo "#define PJMEDIA_HAS_G722_CODEC 1" >> $PJSIP_CONFIG_SITE_H
+    echo "#define PJMEDIA_HAS_G7221_CODEC 1" >> $PJSIP_CONFIG_SITE_H
+    echo "#define PJSIP_AUTH_AUTO_SEND_NEXT 0" >> $PJSIP_CONFIG_SITE_H
+
     if [ $OPUS_SUPPORT = true ]; then
       echo "#define PJMEDIA_HAS_OPUS_CODEC 1" >> $PJSIP_CONFIG_SITE_H
       echo "#define PJMEDIA_CODEC_OPUS_DEFAULT_SAMPLE_RATE 16000" >> $PJSIP_CONFIG_SITE_H
-      echo "#define PTIME 40" >> $PJSIP_CONFIG_SITE_H
-      echo "#define PJMEDIA_CODEC_OPUS_DEFAULT_BIT_RATE 24000" >> $PJSIP_CONFIG_SITE_H
-      echo "#define PJMEDIA_CODEC_OPUS_DEFAULT_COMPLEXITY 1" >> $PJSIP_CONFIG_SITE_H
-      echo "#define PJMEDIA_CODEC_OPUS_DEFAULT_CBR PJ_TRUE" >> $PJSIP_CONFIG_SITE_H
+      echo "#define PTIME 20" >> $PJSIP_CONFIG_SITE_H
+      echo "#define PJMEDIA_CODEC_OPUS_DEFAULT_BIT_RATE 0" >> $PJSIP_CONFIG_SITE_H
+      echo "#define PJMEDIA_CODEC_OPUS_DEFAULT_COMPLEXITY 5" >> $PJSIP_CONFIG_SITE_H
+      echo "#define PJMEDIA_CODEC_OPUS_DEFAULT_CBR PJ_FALSE" >> $PJSIP_CONFIG_SITE_H
     fi
 
     echo "Done creating new config_site.h"
@@ -603,6 +607,7 @@ function _build () {
 
     cp $PJSIP_CONFIG_SITE_H "$BASE_DIR/pjsip/src/pjlib/include/pj"
     #cp "$BASE_DIR/opus.c" "$BASE_DIR/pjsip/src/pjmedia/src/pjmedia-codec/opus.c"
+    #cp "$BASE_DIR/pjsua_media.c" "$BASE_DIR/pjsip/src/pjsip/src/pjsua-lib/pjsua_media.c"
 
     ARCH="-arch $arch" $configure >> $arch_log 2>&1 || exit
 
