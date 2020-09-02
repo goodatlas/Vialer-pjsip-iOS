@@ -5,9 +5,10 @@ AVIALABLE_ARCHS=(
     "armv7"
     "armv7s"
     "arm64"
+    "i386"
+    "x86_64"
 )
 #    "i386"
-#    "x86_64"
 export BASE_DIR=`pwd -P`
 export MIN_IOS_VERSION="10.0"
 export IOS_SDK_VERSION="13.2"
@@ -648,11 +649,11 @@ function _collect () {
         cp -v ./$x ./pjsip/temp/$1
     done | tee "$BASE_DIR"/pjsip/logs/collect.log
 
-    if [ $INDEPENDENT_WEBRTC = true ]; then
-        #if [ "$1" != "i386" ] || [ "$1" != "x86_64" ]; then
-            rm ./pjsip/temp/$1/libsrtp*.a
-        #fi
-    fi
+    #if [ $INDEPENDENT_WEBRTC = true ]; then
+    #    if [ "$1" != "i386" ] || [ "$1" != "x86_64" ]; then
+    #        rm ./pjsip/temp/$1/libsrtp*.a
+    #    fi
+    #fi
 }
 
 function _merge () {
@@ -685,7 +686,7 @@ function clean_pjsip_libs_temp () {
 function clean_pjsip_libs () {
     arch=$1
 
-    echo "Clean $arch lib direcotry"
+    echo "Clean $arch lib directory"
 
     for src_dir in ${PJSIP_LIB_PATHS[*]}; do
         dir="$PJSIP_SRC_DIR/${src_dir}"
