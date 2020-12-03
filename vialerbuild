@@ -5,9 +5,9 @@ AVIALABLE_ARCHS=(
     "armv7"
     "armv7s"
     "arm64"
+    "x86_64"
 )
 #    "i386"
-#    "x86_64"
 export BASE_DIR=`pwd -P`
 export MIN_IOS_VERSION="10.0"
 export IOS_SDK_VERSION="13.2"
@@ -511,7 +511,7 @@ function config_site () {
 
     if [ $OPUS_SUPPORT = true ]; then
       echo "#define PJMEDIA_HAS_OPUS_CODEC 1" >> $PJSIP_CONFIG_SITE_H
-#      echo "#define PJMEDIA_CODEC_OPUS_DEFAULT_SAMPLE_RATE 16000" >> $PJSIP_CONFIG_SITE_H
+      echo "#define PJMEDIA_CODEC_OPUS_DEFAULT_SAMPLE_RATE 48000" >> $PJSIP_CONFIG_SITE_H
       echo "#define PTIME 20" >> $PJSIP_CONFIG_SITE_H
       echo "#define PJMEDIA_CODEC_OPUS_DEFAULT_BIT_RATE 0" >> $PJSIP_CONFIG_SITE_H
       echo "#define PJMEDIA_CODEC_OPUS_DEFAULT_COMPLEXITY 5" >> $PJSIP_CONFIG_SITE_H
@@ -648,11 +648,11 @@ function _collect () {
         cp -v ./$x ./pjsip/temp/$1
     done | tee "$BASE_DIR"/pjsip/logs/collect.log
 
-    if [ $INDEPENDENT_WEBRTC = true ]; then
-        if [ "$1" != "i386" ] || [ "$1" != "x86_64" ]; then
-            rm ./pjsip/temp/$1/libsrtp*.a
-        fi
-    fi
+    #if [ $INDEPENDENT_WEBRTC = true ]; then
+    #    if [ "$1" != "i386" ] || [ "$1" != "x86_64" ]; then
+    #        rm ./pjsip/temp/$1/libsrtp*.a
+    #    fi
+    #fi
 }
 
 function _merge () {
