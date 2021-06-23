@@ -16,13 +16,12 @@ export USE_ARCHS=()
 
 export DOWNLOAD_PJSIP_SRC=true
 export CLEAN_PJSIP_SRC=true
-export SSL_SUPPORT=false
+export SSL_SUPPORT=true
 #export OPUS_SUPPORT=false
 export OPUS_SUPPORT=true
 #export H264_SUPPORT=false
 export H264_SUPPORT=true
-#export INDEPENDENT_WEBRTC=false
-export INDEPENDENT_WEBRTC=true
+export INDEPENDENT_WEBRTC=false
 export ENABLE_ZRTP=false
 export HAS_BITCODE=true
 #export HAS_IPV6=false

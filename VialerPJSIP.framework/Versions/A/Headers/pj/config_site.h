@@ -1,9 +1,7 @@
 #define PJ_CONFIG_IPHONE 1
-#define PJMEDIA_HAS_SRTP 0
 #define PJMEDIA_HAS_VIDEO 1
 #define PJ_HAS_IPV6 1
 #include <VialerPJSIP/pj/config_site_sample.h>
-#define PJMEDIA_HAS_WEBRTC_AEC 1
 #define PJMEDIA_HAS_SPEEX_AEC 1
 #define PJMEDIA_SPEEX_AEC_USE_AGC 1
 #define PJMEDIA_SPEEX_AEC_USE_DENOISE 1
